@@ -1,0 +1,86 @@
+{
+	// "$schema" is a best-practice for modern configuration files.
+	// It points to a "schema" definition file within the 'wrangler'
+	// package. This gives you and VS Code powerful "intellisense"
+	// (autocomplete and error-checking) when editing this file, so
+	// you immediately know what options are valid and what they do.
+	"$schema": "node_modules/wrangler/config-schema.json",
+  
+	// "name" is the unique identifier for this Worker in your
+	// Cloudflare account. When you run `pnpm turbo run deploy`,
+	// Wrangler will look for a Worker with this exact name or
+	// create one if it doesn't exist.
+	"name": "aesthetics-chat-worker",
+  
+	// "main" is the entrypoint for your Worker. It tells Wrangler
+	// which file contains the 'export default' that starts your server.
+	// We are pointing it to our TypeScript file in the 'src' directory,
+	// which Wrangler will automatically compile into JavaScript.
+	"main": "src/index.ts",
+  
+	// "compatibility_date" is one of the most important settings for
+	// production stability. It "pins" your Worker to a specific
+	// version of the Cloudflare runtime API (workerd). This is a
+	// best practice that ensures Cloudflare can release new (and
+	// potentially breaking) features without ever breaking your
+	// existing, deployed code. You update this date manually when
+	// you are ready to adopt new features.
+	"compatibility_date": "2025-10-29",
+  
+	// "observability" is a best-practice flag for production.
+	// Setting "enabled": true integrates your Worker's logs (`console.log`)
+	// and performance traces with Cloudflare's broader observability
+	// platform, making it much easier to debug production issues.
+	"observability": {
+	  "enabled": true
+	},
+  
+	// -----------------------------------------------------------------
+	// BINDINGS
+	// This is the section where you connect your Worker to
+	// other Cloudflare resources (like databases, K/V, R2, etc.).
+	// This is the core of the "Configuration as Code" principle.
+	// -----------------------------------------------------------------
+  
+	// This is the binding for Cloudflare AI (includes AI Gateway access).
+	// It creates an `AI` binding on `env` that we can use to get a Gateway client.
+	"ai": {
+	  "binding": "AI"
+	},
+
+	// Environment variables (non-secret). Provide your AI Gateway ID here.
+	// Set secrets like provider API keys via `wrangler secret put NAME`.
+	"vars": { "AI_GATEWAY_ID": "aesthetics-chat-gateway" }
+  
+	// --- The rest of this is the standard template boilerplate ---
+	// --- We'll use these later as your app grows ---
+  
+	/**
+	 * Smart Placement
+	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
+	 */
+	// "placement": { "mode": "smart" }
+  
+	/**
+	 * Environment Variables
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#environment-variables
+	 */
+	// "vars": { "MY_VARIABLE": "production_value" }
+  
+	/**
+	 * Note: Use secrets to store sensitive data.
+	 * https://developers.cloudflare.com/workers/configuration/secrets/
+	 */
+  
+	/**
+	 * Static Assets
+	 * https://developers.cloudflare.com/workers/static-assets/binding/
+	 */
+	// "assets": { "directory": "./public/", "binding": "ASSETS" }
+  
+	/**
+	 * Service Bindings (communicate between multiple Workers)
+	 * https://developers.cloudflare.com/workers/wrangler/configuration/#service-bindings
+	 */
+	// "services": [{ "binding": "MY_SERVICE", "service": "my-service" }]
+  }
